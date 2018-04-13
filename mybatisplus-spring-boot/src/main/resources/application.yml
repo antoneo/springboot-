@@ -1,0 +1,78 @@
+#app
+server:
+  port: 8081
+druid:
+  username: admin
+  password: 123456
+
+#spring
+spring:
+  devtools:
+    restart:
+      enabled: false
+
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test?useunicode=true&characterencoding=utf-8&zerodatetimebehavior=converttonull&transformedbitisboolean=true&usessl=false
+    username: test
+    password: 123456
+    initialize: true
+    continue-on-error: true
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,log4j
+    #数据源配置，初始化大小、最小、最大
+    initialsize: 1
+    minidle: 1
+    maxactive: 20
+    #连接等待超时时间
+    maxwait: 60000
+    #配置隔多久进行一次检测(检测可以关闭的空闲连接)
+    timebetweenevictionrunsmillis: 60000
+    #配置连接在池中的最小生存时间
+    minevictableidletimemillis: 300000
+    validationquery: SELECT 1 FROM DUAL
+    testwhileidle: true
+    testonborrow: false
+    testonreturn: true
+    poolpreparedstatements: true
+    maxopenpreparedstatements: 20
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connection-properties: druid.stat.merggsql=ture;druid.stat.slowsqlmillis=5000
+
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.demo.entity
+  typeEnumsPackage: com.demo.entity.enums
+  global-config:
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 2
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    field-strategy: 2
+    #驼峰下划线转换
+    db-column-underline: true
+    #刷新mapper 调试神器
+    refresh-mapper: true
+    #数据库大写下划线转换
+    capital-mode: true
+    #序列接口实现类配置,不在推荐使用此方式进行配置,请使用自定义bean注入
+    #key-generator: com.baomidou.mybatisplus.incrementer.H2KeyGenerator
+    #逻辑删除配置（下面3个配置）
+    logic-delete-value: 0
+    logic-not-delete-value: 1
+    #自定义sql注入器,不在推荐使用此方式进行配置,请使用自定义bean注入
+    #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+    #自定义填充策略接口实现,不在推荐使用此方式进行配置,请使用自定义bean注入
+    #meta-object-handler: MyMetaObjectHandler
+    #自定义SQL注入器
+    #sql-injector: com.baomidou.springboot.xxx
+    # SQL 解析缓存，开启后多租户 @SqlParser 注解生效
+    sql-parser-cache: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+#logging
+logging:
+  level: warn
